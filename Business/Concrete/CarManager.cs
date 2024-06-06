@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,51 +19,80 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.Description?.Length < 2 || car.DailyPrice <= 0)
             {
-                Console.WriteLine("Lütfen Geçerli Araba Bilgileri Giriniz.");
-                return;
+                return new ErrorResult(Messages.CarInvalid);
             }
             _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
+            if (car == null)
+            {
+                return new ErrorResult(Messages.CarInvalid);
+            }
             _carDal.Delete(car);
+            return new SuccessResult(Messages.CarDeleted);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
 
-        public Car GetCarByID(int id)
+        public IDataResult<Car> GetCarByID(int id)
         {
-            return _carDal.Get(c => c.CarId == id);
+            if (id <= 0)
+            {
+                return new ErrorDataResult<Car>(_carDal.Get(c => c.CarId == id), Messages.CarInvalid);
+            }
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == id), Messages.GetCar);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.CarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.CarDetails(), Messages.CarListed);
         }
 
-        public List<Car> GetCarsByBrandID(int brandId)
+        public IDataResult<List<Car>> GetCarsByBrandID(int brandId)
         {
-            return _carDal.GetAll(c => c.BrandId == brandId);
+            var temp = _carDal.GetAll(c => c.BrandId == brandId);
+            if (temp == null)
+            {
+                return new ErrorDataResult<List<Car>>(temp, Messages.CarInvalid);
+            }
+            return new SuccessDataResult<List<Car>>(temp, Messages.CarListed);
 
         }
 
-        public List<Car> GetCarsByColorID(int colorId)
+        public IDataResult<List<Car>> GetCarsByColorID(int colorId)
         {
-            return _carDal.GetAll(c => c.ColorId == colorId);
+            var temp = _carDal.GetAll(c => c.ColorId == colorId);
+            if (temp == null)
+            {
+                return new ErrorDataResult<List<Car>>(temp, Messages.CarInvalid);
+            }
+            return new SuccessDataResult<List<Car>>(temp, Messages.CarListed);
 
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
-            _carDal.Update(car);
+            try
+            {
+                _carDal.Update(car);
+                return new SuccessResult(Messages.CarUpdated);
+
+            }
+            catch 
+            {
+
+                return new ErrorResult(Messages.CarInvalid);
+            }
         }
     }
 }

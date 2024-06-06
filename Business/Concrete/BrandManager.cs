@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -13,30 +15,62 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public void Add(Brand brand)
+        public IResult Add(Brand brand)
         {
+            try
+            {
+                _brandDal.Add(brand);
+                return new SuccessResult(Messages.BrandAdded);
+            }
+            catch
+            {
 
-            _brandDal.Add(brand);
+                return new ErrorResult(Messages.BrandInvalid);
+            }
         }
 
-        public void Delete(Brand brand)
+        public IResult Delete(Brand brand)
         {
-            _brandDal.Delete(brand);
+            try
+            {
+                _brandDal.Delete(brand);
+                return new SuccessResult(Messages.BrandDeleted);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.BrandInvalid);
+            }
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(),Messages.BrandListed);
         }
 
-        public Brand GetByID(int id)
+        public IDataResult<Brand> GetByID(int id)
         {
-            return _brandDal.Get(b => b.BrandId == id);
+            var temp = _brandDal.Get(b => b.BrandId == id);
+            if (temp == null)
+            {
+                return new ErrorDataResult<Brand>(temp, Messages.BrandInvalid);
+            }
+            return new SuccessDataResult<Brand>(temp, Messages.GetBrand);
         }
 
-        public void Update(Brand brand)
+        public IResult Update(Brand brand)
         {
-            _brandDal.Update(brand);
+            try
+            {
+                _brandDal.Update(brand);
+                return new SuccessResult(Messages.BrandUpdated);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.BrandInvalid);
+            }
         }
     }
 }

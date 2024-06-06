@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 
 namespace Business.Concrete
@@ -13,29 +16,61 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
-            _colorDal.Add(color);
+            try
+            {
+                _colorDal.Add(color);
+                return new SuccessResult(Messages.ColorAdded);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.ColorInvalid);
+            }
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
-            _colorDal.Delete(color);
+            try
+            {
+                _colorDal.Delete(color);
+                return new SuccessResult(Messages.ColorDeleted);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.ColorInvalid);
+            }
+        }
+        public IDataResult<List<Color>> GetAll()
+        {
+
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorListed);
         }
 
-        public List<Color> GetAll()
+        public IDataResult<Color> GetByID(int id)
         {
-            return _colorDal.GetAll();
+            var temp = _colorDal.Get(c => c.ColorId== id);
+            if (temp == null)
+            {
+                return new ErrorDataResult<Color>(temp, Messages.ColorInvalid);
+            }
+            return new SuccessDataResult<Color>(temp, Messages.GetColor);
         }
 
-        public Color GetByID(int id)
+        public IResult Update(Color color)
         {
-            return _colorDal.Get(c => c.ColorId == id);
-        }
+            try
+            {
+                _colorDal.Update(color);
+                return new SuccessResult(Messages.ColorUpdated);
+            }
+            catch
+            {
 
-        public void Update(Color color)
-        {
-            _colorDal.Update(color);
+                return new ErrorResult(Messages.ColorInvalid);
+            }
         }
     }
 }

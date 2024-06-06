@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Concrete.Entity_Framework
+namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepository<Car, ReCapContext>, ICarDal
     {
