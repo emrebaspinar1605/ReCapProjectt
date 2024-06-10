@@ -32,7 +32,7 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
-                return context.Set<TEntity>().First(filter);
+                return context.Set<TEntity>().FirstOrDefault(filter);
             }
         }
 

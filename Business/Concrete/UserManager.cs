@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constant;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -15,53 +18,40 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
-            try
-            {
-                _userDal.Add(user);
-                return new SuccessResult(Messages.UserAdded);
-            }
-            catch 
-            {
+            ValidationTool.Validate(new UserValidator(), user);
 
-                return new ErrorResult(Messages.UserInvalid);
-            }
+            _userDal.Add(user);
+            return new SuccessResult(Messages.UserAdded);
         }
 
         public IResult Delete(User user)
         {
-            try
-            {
-                _userDal.Delete(user);
-                return new SuccessResult(Messages.UserDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.UserInvalid);
-            }
+            _userDal.Delete(user);
+            return new SuccessResult(Messages.UserDeleted);
         }
 
         public IDataResult<List<User>> GetAll()
         {
-
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(),Messages.UserListed);
-           
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
         }
 
+        public IDataResult<User> GetById(int id)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == id), Messages.UserListed);
+
+        }
+
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)
         {
-            try
-            {
-                _userDal.Update(user);
-                return new SuccessResult(Messages.UserUpdated);
-            }
-            catch
-            {
+            ValidationTool.Validate(new UserValidator(), user);
 
-                return new ErrorResult(Messages.UserInvalid);
-            }
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
+
         }
     }
 }

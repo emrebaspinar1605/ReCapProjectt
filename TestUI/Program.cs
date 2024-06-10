@@ -10,7 +10,7 @@ IUserService userService = new UserManager(new EfUserDal());
 ICustomerService customerService = new CustomerManager(new EfCustomerDal());
 IRentalService rentalService = new RentalManager(new EfRentalDal());
 
-//RentalTest1(rentalService);
+RentalTest1(rentalService);
 
 //CustomerTest1(customerService);
 

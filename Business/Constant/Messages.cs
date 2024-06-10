@@ -56,6 +56,12 @@ namespace Business.Constant
         public static string UserListed = " Kullanıcılar Listelendi.";
 
         public static string UserInvalid = "Kullanıcı Bilgileri Yanlış.";
+        
+        public static string PassMustContainBigLetter = "Şifre Büyük Harf İçermelidir";
+        public static string PassMustContainSpecialChar = "Şifre Özel Karakter İçermelidir.";
+        public static string PassMustContainLetterAndDigit = "Şifre Harf Ve Sayı İçermelidir.";
+        public static string PassMustContain = "Kullanıcı Bilgileri Yanlış.";
+
 
         #endregion
 
