@@ -87,6 +87,10 @@ namespace Business.Constant
         public static string RentalNotFound = "Kiralama Bulunamadı.";
 
         public static string RentalInvalid = "Kiralama Bilgileri Yanlış.";
+        internal static string ImageAdded = "Araba Resmi Eklendi.";
+        internal static string ImageDeleted = "Araba Resmi Silindi.";
+        internal static string ImageUpdated = "Araba Resmi Silindi.";
+        internal static string CarImagesOverLimit = "Araba Başına Düşen Resim Limiti Aşıldı.";
 
         #endregion
     }
