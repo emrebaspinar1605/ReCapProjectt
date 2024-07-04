@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Business
+namespace Core.Utilities.Business
 {
     public class BusinessRules
     {
-        public static IResult Run(params IResult[] logics )
+        private static IResult returnResult = new ErrorResult();
+        public static IResult Run(params IResult[] logics)
         {
             foreach (var logic in logics)
             {

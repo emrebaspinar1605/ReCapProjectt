@@ -1,11 +1,12 @@
 ﻿using Business.Abstract;
-using Business.Constant;
-using Business.ValidationRules.FluentValidation;
-using Core.Aspect.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation.FluentValidation;
-using Core.Utilities.Results;
 using DataAccess.Abstract;
-using Entities.Concrete;
+using Core.Entities.Concrete;
+using Core.Utilities.Results;
+using Business.Constant;
+using System.ComponentModel.DataAnnotations;
+using Core.Aspect.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -18,40 +19,27 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
+        }
+
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
-            ValidationTool.Validate(new UserValidator(), user);
-
             _userDal.Add(user);
-            return new SuccessResult(Messages.UserAdded);
+            return new SuccessResult();
         }
 
-        public IResult Delete(User user)
+        public IDataResult<User> GetByMail(string email)
         {
-            _userDal.Delete(user);
-            return new SuccessResult(Messages.UserDeleted);
-        }
-
-        public IDataResult<List<User>> GetAll()
-        {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
-        }
-
-        public IDataResult<User> GetById(int id)
-        {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == id), Messages.UserListed);
+            var result = _userDal.Get(u => u.Email == email);
+            if (result != null) return new SuccessDataResult<User>(result);
+            return new SuccessDataResult<User>();
 
         }
-
-        [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User user)
-        {
-            ValidationTool.Validate(new UserValidator(), user);
-
-            _userDal.Update(user);
-            return new SuccessResult(Messages.UserUpdated);
-
-        }
+        #region UserRulesMethods
+        
+        #endregion
     }
 }

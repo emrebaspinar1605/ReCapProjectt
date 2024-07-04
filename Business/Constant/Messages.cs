@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,7 +57,7 @@ namespace Business.Constant
         public static string UserListed = " Kullanıcılar Listelendi.";
 
         public static string UserInvalid = "Kullanıcı Bilgileri Yanlış.";
-        
+
         public static string PassMustContainBigLetter = "Şifre Büyük Harf İçermelidir";
         public static string PassMustContainSpecialChar = "Şifre Özel Karakter İçermelidir.";
         public static string PassMustContainLetterAndDigit = "Şifre Harf Ve Sayı İçermelidir.";
@@ -91,6 +92,14 @@ namespace Business.Constant
         internal static string ImageDeleted = "Araba Resmi Silindi.";
         internal static string ImageUpdated = "Araba Resmi Silindi.";
         internal static string CarImagesOverLimit = "Araba Başına Düşen Resim Limiti Aşıldı.";
+        internal static string? AuthorizationDenied = "Bu İşlem İçin Yetkili Değilsiniz.";
+        internal static string UserRegistered = "Kullanıcı Kayıt Edildi";
+        internal static string UserNotFound = "Kullanıcı Bulunamadı.";
+        internal static string PasswordError = "Şifre Hatalı.";
+        internal static string SuccessfulLogin = "Giriş Başarılı.";
+        internal static string UserAlreadyExists = "Kullanıcı Zaten Mevcut.";
+        internal static string AccessTokenCreated = "Erişim Token'ı Oluşturuldu.";
+        internal static string EmailAlreadyRegistered = "Bu Email Zaten Sisteme Kayıtlı.";
 
         #endregion
     }

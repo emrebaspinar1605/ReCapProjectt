@@ -12,14 +12,17 @@ namespace Core.Aspect.Autofac.Validation
 {
     public class ValidationAspect : MethodInterception
     {
-        public Type _validatorType;
+        private Type _validatorType;
         public ValidationAspect(Type validatorType)
         {
-            if (!typeof(IValidator).IsAssignableFrom(validatorType)) throw new Exception("Bu Bir Doğrulama Sınıfı Değildir.");
+            if (!typeof(IValidator).IsAssignableFrom(validatorType))
+            {
+                throw new Exception("Bu bir doğrulama sınıfı değil.");
+            }
 
             _validatorType = validatorType;
         }
-        protected override void OnAfter(IInvocation invocation)
+        protected override void OnBefore(IInvocation invocation)
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType);
             var entityType = _validatorType.BaseType.GetGenericArguments()[0];

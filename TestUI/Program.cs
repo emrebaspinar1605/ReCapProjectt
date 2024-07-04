@@ -76,14 +76,7 @@ static void ColorTest1(IColorService colorService)
     Console.WriteLine(colorService.GetAll().Message);
 }
 
-static void UserTest1(IUserService userService)
-{
-    //userService.Add(new User { FirstName = "Emre", LastName = "Başpınar", Email = "bla@gmail.com", Password = "1234" });
-    foreach (var user in userService.GetAll().Data)
-    {
-        Console.WriteLine(user.FirstName + "-" + user.LastName);
-    }
-}
+
 
 static void CustomerTest1(ICustomerService customerService)
 {

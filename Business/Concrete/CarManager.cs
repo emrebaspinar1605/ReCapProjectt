@@ -1,8 +1,10 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -24,9 +26,12 @@ namespace Business.Concrete
             _carDal = carDal;
         }
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("admin,super,car.add")]
         public IResult Add(Car car)
         {
-            ValidationTool.Validate(new CarValidator(), car);
+            var result = BusinessRules.Run(CheckClaimIsCorrect());
+            if(result != null)
+                return new ErrorResult(result.Message);
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
@@ -90,5 +95,13 @@ namespace Business.Concrete
 
 
         }
+
+        #region BusinessRulesMethods
+        private IResult CheckClaimIsCorrect()
+        {
+            if (SecuredOperation.trueRole) return new SuccessResult();
+            return new ErrorResult(Messages.AuthorizationDenied);
+        }
+        #endregion
     }
 }

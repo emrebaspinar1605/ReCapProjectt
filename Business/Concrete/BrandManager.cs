@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constant;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Results;
@@ -20,6 +21,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(BrandValidation))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)
         {
             ValidationTool.Validate(new BrandValidation(), brand);
@@ -28,23 +30,25 @@ namespace Business.Concrete
 
         }
 
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
             return new SuccessResult(Messages.BrandDeleted);
         }
-
+        [CacheAspect]
         public IDataResult<List<Brand>> GetAll()
         {
 
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandListed);
         }
-
+        [CacheAspect]
         public IDataResult<Brand> GetByID(int id)
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == id), Messages.GetBrand);
         }
         [ValidationAspect(typeof(BrandValidation))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Update(Brand brand)
         {
             ValidationTool.Validate(new BrandValidation(), brand);

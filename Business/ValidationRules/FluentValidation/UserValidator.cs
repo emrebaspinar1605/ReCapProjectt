@@ -1,5 +1,6 @@
 ﻿using Business.Constant;
-using Entities.Concrete;
+using Core.Entities.Concrete;
+using Entities.DTOs;
 using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
@@ -25,13 +26,13 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Email).Must(ContainsComet);
             RuleFor(u => u.Email).Must(ContainsDotCom);
 
-            RuleFor(u => u.Password).NotNull();
-            RuleFor(u => u.Password).NotEmpty();
-            RuleFor(u => u.Password).MinimumLength(4);
-            RuleFor(u => u.Password).MaximumLength(16);
-            RuleFor(u => u.Password).Must(ContainsSpecialChar).WithMessage(Messages.PassMustContainSpecialChar);
-            RuleFor(u => u.Password).Must(ContainsBigLetter).WithMessage(Messages.PassMustContainBigLetter);
-            RuleFor(u => u.Password).Must(ContainLetterAndDigit).WithMessage(Messages.PassMustContainLetterAndDigit);
+            //RuleFor(u => u.Password).NotNull();
+            //RuleFor(u => u.Password).NotEmpty();
+            //RuleFor(u => u.Password).MinimumLength(4);
+            //RuleFor(u => u.Password).MaximumLength(16);
+            //RuleFor(u => u.Password).Must(ContainsSpecialChar).WithMessage(Messages.PassMustContainSpecialChar);
+            //RuleFor(u => u.Password).Must(ContainsBigLetter).WithMessage(Messages.PassMustContainBigLetter);
+            //RuleFor(u => u.Password).Must(ContainLetterAndDigit).WithMessage(Messages.PassMustContainLetterAndDigit);
         }
 
         private bool ContainsSpecialChar(string arg)
@@ -68,4 +69,5 @@ namespace Business.ValidationRules.FluentValidation
             return containsLetter && containsDigit;
         }
     }
+   
 }
